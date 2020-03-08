@@ -1,0 +1,28 @@
+.homepage-header{
+    background-image:linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.7)),url("../img/geek.jpeg");
+    background-size:cover;
+    background-position:center;
+    height:100vh;
+}
+.top{
+    padding-top:13%;
+}
+header i{
+    font-size:100px;
+    color:rgb(255, 187, 0);
+}
+.userform-class{
+    margin-top:160px;
+}
+small i{
+    font-size:16px;
+}
+#comment-photo{
+    width:50px;
+    border:1px solid white;
+    border-radius:80px;
+    margin:0 5px;
+}
+#main-footer{
+    color:orange;
+}

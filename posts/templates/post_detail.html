@@ -1,0 +1,124 @@
+{% extends 'user/user_base.html' %}
+{% block body-block %}
+<div class="container">
+    {% if post %}
+     <div class="row">
+         <div class="col-12">
+             <div class="card mt-4">
+                 <div class="card-header">
+                    <h1 class="text-warning text-center display-4 mb-4">{{ post.title }}</h1>
+                    <h5 class="text-muted lead">{{ post.published_date }}</h5>
+                    <h5 class="text-muted lead">{{ post.creator }}</h5>
+                    <h5 class="text-muted lead">Group: {{ post.group }}</h5>
+                    <p class="text-center">{{ post.content }}</p>
+                 </div>
+                 <div class="card-footer">
+                     <lead>
+                         {%  if user.is_authenticated %}
+                         <form action="{% url 'detail_post' post.pk %}" method="POST">
+                         {% csrf_token %}
+                         <button type="submit"><i class="ion-thumbsup"></i></button></form>
+                         {% endif %}
+                         likes: {{ post.likes }}</lead>
+                 </div>
+                 {% if user.is_authenticated %}
+                 {% if request.user.username == post.creator %}
+                 <div class="card">
+                     <div class="card-body">
+                            <h5><a class="btn btn-danger text-white ml-2 mb-2" href="{% url 'delete_post' post.pk  %}">Delete Post</a></h5>
+                            <h5><a class="btn btn-warning text-white ml-2 mb-2" href="{% url 'update_post' post.pk  %}">Update Post</a></h5>
+                     </div>
+                 </div>
+                 {% endif %}
+                 {% endif %}
+             </div>
+        </div>
+        {% else %}
+        <p>No Posts</p>
+       {% endif %} 
+       </div>
+       <div class="card p-2">
+       <h6 class="text-primary mb-5 mt-5">Comments ({{post.comment.count }}):</h6>
+       {% if request.user.username in members %}
+       <form class="form-inline" method="POST" action="{% url 'post_comment' post.pk %}">
+            <p>{{ com_form.content }}</p>
+            {% csrf_token %}
+            <button class="btn btn-outline-info ml-2 btn-sm"type="submit">Comment</button>
+        </form>
+        {% endif %}
+        {% for comment in post.comment.all %}
+          <div class="mt-4">
+            <cite><img id="comment-photo" src="{{ comment.photo.url }}">{{ comment.creator }}</cite> <i class=" comment-control ion-android-add"></i>
+            <h6>{{ comment }}</h6>
+            {% if request.user.username in members %}
+                <form class="comment-form form-inline" method="POST" action="{% url 'post_sub_comment' comment.pk %}">
+                    <p>{{ sub_com_form.content }}</p>
+                    {% csrf_token %}
+                    <button class="btn btn-outline-info ml-2 btn-sm" type="submit">Reply</button>
+                </form>
+                
+<button id="book" class="btn btn-dark text-white btn-sm " data-toggle="modal" data-target="#subcommentModal">Reply</button>
+<!-- <button class=" btn-sm btn-dark"></button> -->
+<div class="modal" tabindex="-1" id="subcommentModal" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Comment</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+                <div class="modal-body">
+                    <form class="comment-form form-inline" method="POST" action="{% url 'post_sub_comment' comment.pk %}">
+                        <p>{{ sub_com_form.content }}</p>
+                        {% csrf_token %}
+                        <button class="btn btn-outline-info ml-2 btn-sm" type="submit">Reply</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+            {% endif %}
+            </div>
+            {% for sub in comment.sub_comment.all %}
+              <div class="ml-4 mt-4">
+               <cite><img id="comment-photo" src="{{ sub.photo.url }}">{{ sub.creator }}</cite> <i class=" comment-control ion-android-add"></i>
+               <h6>{{ sub }}</h6>
+               {% if request.user.username in members %}
+                   <form class="comment-form form-inline" method="POST" action="{% url 'post_meta_comment' comment.pk sub.pk %}">            
+                        <p>{{ sub_com_form.content }}</p>
+                     {% csrf_token %}
+                     <button class="btn btn-outline-info ml-2 btn-sm" type="submit">Reply</button>
+                   </form>
+                   <button id="book" class="btn btn-dark text-white btn-sm " data-toggle="modal" data-target="#subcommentModal">Reply</button>
+<!-- <button class=" btn-sm btn-dark"></button> -->
+<div class="modal" tabindex="-1" id="subcommentModal" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Comment</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+                <div class="modal-body">
+                    <form class="comment-form form-inline" method="POST" action="{% url 'post_meta_comment' comment.pk sub.pk %}">            
+                        <p>{{ sub_com_form.content }}</p>
+                     {% csrf_token %}
+                     <button class="btn btn-outline-info ml-2 btn-sm" type="submit">Reply</button>
+                   </form>
+                </div>
+            </div>
+        </div>
+    </div>
+               {% endif %}
+            </div>
+            {% endfor %}
+        {% endfor %} 
+    </div>
+{% endblock %}
+
+
+
+
+

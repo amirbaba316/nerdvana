@@ -1,0 +1,58 @@
+{% extends 'user/user_base.html' %}
+{% block body-block %}
+<div class="container">
+
+    {% if group %}
+     <div class="row">
+         <div class="col-12">
+             <div class="card mt-4">
+                 <div class="card-header">
+                    <h1 class="text-warning text-center display-4 mb-4">{{ group.name }}</h1>
+                    <h5 class="text-muted lead">{{ group.date_created.date }}</h5>
+                    <h5 class="text-muted lead">{{ group.creator }}</h5>
+                    <h5 class="text-muted lead">Members: {{ group.members.count }}</h5>
+                    <h5 class="text-muted lead">Posts: {{ group.posts.count }}</h5>
+                    <p class="text-center">{{ group.description }}</p>
+                 </div>
+                 <div class="card-body">
+                        {% if group.posts.all %}
+                         <h2 class="text-warning text-center ">Posts</h2>
+                        <ul class="list-unstyled">
+                            {% for post in group.posts.all %}
+                            <li class="card mb-4">
+                            <div class="card-header h3 text-warning mb-4 text-white">{{ post }}
+                                <a class="btn btn-outline-warning m-4" href="{% url 'detail_post' post.pk %}">View</a>
+                                <p class="text-muted h4 lead p-2">Posted By: {{ post.creator }} {{ post.published_date.date }}</p>
+                            </div>
+                                <div class="card-body">
+                                    <p class="card-text">{{ post.content }}</p>
+                                    <small><i class=ion-android-textsms></i> {{post.comment.count}}</small>
+                                </div>
+                            {% endfor %}
+                            </ul>
+                            {% else %}
+                            <p>There are no posts to show</p>
+                        {% endif %}
+                 </div>
+                 {% if user.is_authenticated %}
+                 {% if request.user.username == group.creator %}
+                 <div class="card">
+                     <div class="card-body">
+                        <h5><a class="btn btn-danger text-white ml-2 mb-2" href="{% url 'delete_group' group.pk  %}">Delete Group</a></h5>
+                        <h5><a class="btn btn-warning text-white ml-2 mt-2 " href="{% url 'update_group' group.pk  %}">Update Group</a></h5>
+                     </div>
+                 </div>
+                 {% endif %}
+                 {% endif %}
+             </div>
+        </div>
+        {% if user.is_authenticated %}
+        {% if request.user.username in members %}
+        <h5><a class="btn btn-outline-warning mt-4 ml-4" href="{% url 'create_post' group.pk  %}">Create Post</a></h5>
+        {% endif %}
+        {% endif %}
+        {% else %}
+        <p>No group</p>
+       {% endif %}
+    </div> 
+{% endblock %}

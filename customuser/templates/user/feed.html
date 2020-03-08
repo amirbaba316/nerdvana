@@ -1,0 +1,64 @@
+{% extends 'user/user_base.html' %}
+{% load static %}
+{% block body-block %}
+<div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-2 bg-dark">
+             <div class="card">
+                <h4 class="card-header text-warning">Profile</h4>
+                <div class="card-body">
+                    <h2><img class="img-main img-fluid mb-3" src="{{ user.photo.url }}"></h2>
+                    <h4>{{ user.get_fullname }}</h4>
+                    <h4>{{ user.username }}</h4>
+                    <h5>{{ user.email }}</h5>
+                    <h5>{{ user.date_joined.date }}</h5>
+                </div>
+                <a class= "text-center card-footer btn btn-warning"href="#">Edit Profile</a>
+            </div>
+            <div class="card mt-3">
+                    <h4 class="card-header text-warning">Subscriptions</h4>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            {% for group in user.members.all %}
+                                <li><a class="card-link"href="{% url 'detail_group' group.pk %}">{{ group }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+            </div>
+        </div>
+            <div class="col-md-7 main-content">
+                {% if posts %}
+                <ul class="list-unstyled">
+                    {% for post in posts %}
+                    <li class="card mb-4">
+                    <div class="card-header h2 text-warning">{{ post.group }}</div>
+                        <div class="card-body">
+                            <small class="text-muted">Posted By: {{ post.creator }} {{ post.published_date }}</small>
+                            <h5 class="card-title"><a class="card-link"href=" {% url 'detail_post' post.pk %}">{{ post }}</a></h5>
+                            <p class="card-text">{{ post.content }}</p>
+                            <i class="ion-android-textsms text-warning" > {{post.comment.count}}</i> 
+                    {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p>There are no posts to show</p>
+                {% endif %}
+            </div>
+            <div class="col-sm-3 bg-dark">
+            <div class="card">
+             <h3 class="card-header"> Suggested Groups</h3>
+             <div class="card-body">
+              {% if groups %}
+               <ul class="list-unstyled">
+                {% for group in groups %}
+                  <li><a  class="card-link text-warning d-block" href="{% url 'detail_group' group.pk %}">{{ group.name }}</a></li>
+                {% endfor %}
+              </ul>
+              {% else %}
+                <p>No groups</p>
+              {% endif %}
+            </div>
+            </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

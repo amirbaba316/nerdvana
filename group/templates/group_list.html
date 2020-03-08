@@ -1,0 +1,30 @@
+{% extends 'user/user_base.html' %}
+{% block body-block %}
+<div class="container">
+   <h2 class="text-dark p-4 text-center">Groups</h2>
+         {% if groups %}
+            <ul class="list-unstyled row">
+            {% for group in groups %}
+               <li class="col-md-3 mt-3">
+                  <div class="card">
+                  <h2 class="card-header text-warning"> {{ group.name }}</h2>
+                  <div class="card-body">
+                     <p class="card-text">{{ group.description }}</p>
+                     <h4 class="lead">Members: {{ group.members.count }}</h4>
+                     <h4 class="lead">Posts: {{ group.posts.count }}</h4>
+                     <h5 class="lead">Creator: {{ group.creator }}</h5>
+                  </div>
+                     <a class="btn btn-outline-warning mb-3" href="{% url 'follow_group' group.pk %}"> Follow</a>
+                     <a class="btn btn-warning text-white" href="{% url 'detail_group' group.pk %}"> View</a>
+               </div>
+               </li>
+           
+            {% endfor %}
+            </ul>
+         {% else %}
+            <p>There are no groups to show</p>
+         {% endif %}
+         
+      <h5><a class="btn btn-outline-warning mt-4" href="{% url 'create_group'  %}">Create Group</a></h5>
+</div>
+{% endblock %}

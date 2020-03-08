@@ -1,0 +1,20 @@
+{% extends 'user/user_base.html' %}
+{% block body-block %}
+<div class="container">
+    <div class="row">
+    <div class="offset-3 col-6 userform-class">
+        <h3 class="text-center text-danger mt-5">Are You Sure You Want To Delete This Group?</h3>
+        <form class="text-center" method="POST" action="{% url 'delete_group' group.pk  %}">
+            {{ form.as_p }}
+            {% csrf_token %}
+            <button class="btn btn-outline-warning mt-4 btn-lg" type="submit">Yes</button>
+        </form>
+        <form class="text-center" method="POST" action="{% url 'detail_group' group.pk  %}">
+            {{ form.as_p }}
+            {% csrf_token %}
+            <button class="btn btn-warning mt-4 btn-lg text-white" type="submit">No</button>
+        </form>
+    </div>
+    </div>
+</div>
+{% endblock %}

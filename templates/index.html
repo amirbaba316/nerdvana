@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block body-block %}
+    <header class="homepage-header">
+        <div class="heading text-center">
+            <div class="top">
+            <h1><i class="ion-ios-glasses-outline"></i></h1>
+            <h1 class="text-white text-uppercase"> Nerd vana</h1>
+            <h3 class="text-white text-warning lead ">Enter At Your Own Risk</h3>
+            <a class="btn btn-outline-warning btn-lg m-2" href="{% url 'create' %}">Sign up</a>
+            <a class="btn btn-warning btn-lg m-2"href="{% url 'login' %}">Login</a>
+            </div>
+        </div>
+    </header>
+{% endblock %}

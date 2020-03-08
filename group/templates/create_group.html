@@ -1,0 +1,15 @@
+{% extends 'user/user_base.html' %}
+{% block body-block %}
+<div class="container">
+    <div class="row">
+    <div class="offset-3 col-6 userform-class">
+        <h1 class="text-center text-warning mb-5 text-uppercase">Create Group</h1>
+        <form class="text-center" method="POST" action="{% url 'create_group' %}">
+            {{ form.as_p }}
+            {% csrf_token %}
+            <button class="btn btn-warning mt-2 text-white" type="submit">Create</button>
+        </form>
+    </div>
+    </div>
+</div>
+{% endblock %}
